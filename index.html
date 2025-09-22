@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Joya Landry - Miss Suisse Francophone 2024</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+      :root {
+          --bg-main: #ffffff;
+          --text-dark: #1a1a1a;
+          --text-light: #666666;
+          --border-color: #eaeaea;
+      }
+      html {
+          scroll-behavior: smooth;
+      }
+      body {
+          font-family: 'Inter', sans-serif;
+          background-color: var(--bg-main);
+          color: var(--text-dark);
+      }
+      h1, h2, h3, h4 {
+          font-family: 'Playfair Display', serif;
+      }
+      #about p {
+          text-align: justify;
+      }
+      .scroll-reveal {
+          opacity: 0;
+          transition: opacity 1.2s cubic-bezier(0.5, 0, 0, 1);
+      }
+      .scroll-reveal.is-visible {
+          opacity: 1;
+      }
+      .press-card,
+      .gallery-item,
+      #about .image-content,
+      #press .grid > .scroll-reveal > img {
+        border-radius: 0.5rem; /* 8px */
+      }
+
+      .press-card {
+        background-color: var(--bg-main);
+        border: 1px solid var(--border-color);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
+      }
+      .press-card:hover {
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        transform: translateY(-5px);
+      }
+
+      .gallery-item {
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .gallery-item:hover {
+        transform: scale(1.03);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      }
+      
+      #about .image-content {
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        overflow: hidden;
+      }
+      
+       .modal {
+           transition: opacity 0.3s ease;
+       }
+       #modalImage {
+           cursor: zoom-in;
+           transition: 0.3s ease;
+           border-radius: 0.5rem;
+       }
+       #modalImage.zoomed {
+           max-width: none;
+           max-height: none;
+           cursor: zoom-out;
+       }
+       .sticky-header {
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+       }
+       
+       .watermark {
+          font-family: 'Great Vibes', cursive;
+          position: fixed;
+          bottom: 1.5rem;
+          right: 7.5rem;
+          font-size: 2.25rem;
+          color: rgba(26, 26, 26, 0.1);
+          pointer-events: none;
+          z-index: 40;
+          transform: rotate(-12deg);
+          user-select: none;
+       }
+
+      @media print {
+          @page {
+              size: landscape;
+              margin: 0;
+          }
+
+          /* --- General Print Resets --- */
+          body {
+              background-color: white !important;
+              color: #000 !important;
+              font-size: 11pt;
+              -webkit-print-color-adjust: exact;
+              print-color-adjust: exact;
+          }
+          header, footer, .print-hidden {
+            display: none !important;
+          }
+          .scroll-reveal {
+            opacity: 1 !important;
+            transform: none !important;
+          }
+          .container {
+              max-width: 100% !important;
+              padding: 0 1.5cm !important;
+          }
+          h2 {
+            font-size: 32pt !important;
+            margin-bottom: 1.5rem !important;
+            line-height: 1.1 !important;
+          }
+          h3 {
+            font-size: 16pt !important;
+            margin-bottom: 0.5rem !important;
+          }
+          p {
+            font-size: 11pt !important;
+            line-height: 1.6 !important;
+          }
+          
+          /* --- Page Break Control --- */
+          section {
+            page-break-before: always;
+            page-break-after: always;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+          }
+          section:first-of-type {
+            page-break-before: auto;
+          }
+
+          /* --- Section Specific Styles --- */
+
+          /* Hero (Cover Page) */
+          #hero {
+              height: 100vh;
+              text-align: center;
+              color: white !important;
+          }
+          /* Removed z-index: -1 which prevented image from printing */
+          #hero .hero-image {}
+          #hero h1 { font-size: 28pt !important; }
+          #hero p { font-size: 14pt !important; }
+          
+          /* About Section */
+          #about .flex-container {
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: stretch !important;
+            width: 100%;
+            height: 70vh;
+          }
+          #about .text-content {
+            width: 50% !important;
+            padding-right: 2rem !important;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+          }
+          #about .image-content {
+            width: 50% !important;
+            position: relative !important;
+            box-shadow: none !important;
+          }
+          #about img {
+            position: absolute !important;
+            inset: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+          }
+          
+          /* Press Section */
+          #press {
+              height: auto !important; /* Allow section to grow to fit content */
+              min-height: 100vh;
+          }
+          #press .grid {
+            grid-template-columns: repeat(3, 1fr) !important;
+            gap: 1.5rem !important;
+            max-width: 100% !important;
+          }
+          .press-card {
+            border: 1px solid #ddd !important;
+            box-shadow: none !important;
+            padding: 1rem !important;
+            page-break-inside: avoid;
+          }
+          .press-card h3 {
+              font-size: 14pt !important;
+          }
+          .press-card p {
+              font-size: 10pt !important;
+          }
+
+          /* Gallery Section */
+          #gallery .grid {
+            grid-template-columns: repeat(4, 1fr) !important;
+            gap: 1rem !important;
+          }
+          .gallery-item {
+            border: 1px solid #ddd;
+            page-break-inside: avoid;
+            box-shadow: none !important;
+          }
+      }
+    </style>
+    <script type="importmap">
+    {
+      "imports": {
+        "react/": "https://aistudiocdn.com/react@^19.1.1/",
+        "react": "https://aistudiocdn.com/react@^19.1.1",
+        "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/"
+      }
+    }
+    </script>
+  </head>
+  <body class="antialiased">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
